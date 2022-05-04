@@ -2,21 +2,25 @@
   # Following 
   # https://github.com/DavHau/mach-nix/blob/master/examples.md#buildpythonpackage-from-github
   
-inputs = {
+  inputs = {
+    nixpkgs.url = "github:NixOS/nixpkgs/21.11";
     flake-utils.url = "github:numtide/flake-utils";
+    flake-utils.inputs.nixpkgs.follows = "nixpkgs";
     # This section will allow us to create a python environment
     # with specific predefined python packages from PyPi
     pypi-deps-db = {
       url = "github:DavHau/pypi-deps-db";
       inputs.mach-nix.follows = "mach-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
     mach-nix = {
       url = "github:DavHau/mach-nix/3.4.0";
       inputs.pypi-deps-db.follows = "pypi-deps-db";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
   };
 
-  outputs = {self, nixpkgs, mach-nix, flake-utils, pypi-deps-db }@inp:
+  outputs = { self, nixpkgs, mach-nix, flake-utils, pypi-deps-db, ... }@inp:
     let
       l = nixpkgs.lib // builtins;
       supportedSystems = [ "x86_64-linux" "aarch64-darwin" ];
