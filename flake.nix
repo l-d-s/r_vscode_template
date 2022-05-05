@@ -35,17 +35,25 @@
       ];
       RWithPackages =
         pkgs.rWrapper.override{
-            packages = vscodeRPackages ++ extraRPackages;
+          packages = vscodeRPackages ++ extraRPackages;
         };
+      # RStudioWithPackages =
+      #   pkgs.rstudioWrapper.override {
+      #     packages = vscodeRPackages ++ extraRPackages;
+      #   };
     in {
       devShell.x86_64-linux =
         pkgs.mkShell { 
+          # need to add
+          # export R_LIBS_SITE=$(R --slave -e 'paste0(.Library.site, collapse = ":")' | sed 's/\[1\] "//g' | sed 's/"//g')
           buildInputs = [
             # note: a derivation, not the flake itself
             # https://discourse.nixos.org/t/flakes-buildinputs-and-devshell/16208
             radian.defaultPackage.x86_64-linux
 
             RWithPackages
+            # RStudioWithPackages
+
             pkgs.pandoc
           ];
         };

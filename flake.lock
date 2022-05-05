@@ -33,7 +33,10 @@
     "mach-nix": {
       "inputs": {
         "flake-utils": "flake-utils_2",
-        "nixpkgs": "nixpkgs_2",
+        "nixpkgs": [
+          "radian",
+          "nixpkgs"
+        ],
         "pypi-deps-db": [
           "radian",
           "pypi-deps-db"
@@ -56,16 +59,18 @@
     },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1651369430,
-        "narHash": "sha256-d86uUm0s11exU9zLo2K1AwtJQJDKubFpoF0Iw767uT4=",
+        "lastModified": 1638239011,
+        "narHash": "sha256-AjhmbT4UBlJWqxY0ea8a6GU2C2HdKUREkG43oRr3TZg=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "b283b64580d1872333a99af2b4cef91bb84580cf",
+        "rev": "a7ecde854aee5c4c7cd6177f54a99d2c1ff28a31",
         "type": "github"
       },
       "original": {
-        "id": "nixpkgs",
-        "type": "indirect"
+        "owner": "NixOS",
+        "ref": "21.11",
+        "repo": "nixpkgs",
+        "type": "github"
       }
     },
     "nixpkgsPy36": {
@@ -85,46 +90,18 @@
     },
     "nixpkgs_2": {
       "locked": {
-        "lastModified": 1643805626,
-        "narHash": "sha256-AXLDVMG+UaAGsGSpOtQHPIKB+IZ0KSd9WS77aanGzgc=",
+        "lastModified": 1638239011,
+        "narHash": "sha256-AjhmbT4UBlJWqxY0ea8a6GU2C2HdKUREkG43oRr3TZg=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "554d2d8aa25b6e583575459c297ec23750adb6cb",
+        "rev": "a7ecde854aee5c4c7cd6177f54a99d2c1ff28a31",
         "type": "github"
       },
       "original": {
-        "id": "nixpkgs",
-        "ref": "nixos-unstable",
-        "type": "indirect"
-      }
-    },
-    "nixpkgs_3": {
-      "locked": {
-        "lastModified": 1651369430,
-        "narHash": "sha256-d86uUm0s11exU9zLo2K1AwtJQJDKubFpoF0Iw767uT4=",
         "owner": "NixOS",
+        "ref": "21.11",
         "repo": "nixpkgs",
-        "rev": "b283b64580d1872333a99af2b4cef91bb84580cf",
         "type": "github"
-      },
-      "original": {
-        "id": "nixpkgs",
-        "type": "indirect"
-      }
-    },
-    "nixpkgs_4": {
-      "locked": {
-        "lastModified": 1618619705,
-        "narHash": "sha256-+yBGazqJxjT+BR00oCNamOgiEFPHBOPkqak7MUYcpBA=",
-        "owner": "NixOS",
-        "repo": "nixpkgs",
-        "rev": "e5cc06a1e806070693add4f231060a62b962fc44",
-        "type": "github"
-      },
-      "original": {
-        "id": "nixpkgs",
-        "ref": "nixos-unstable",
-        "type": "indirect"
       }
     },
     "pypi-deps-db": {
@@ -133,16 +110,19 @@
           "radian",
           "mach-nix"
         ],
-        "nixpkgs": "nixpkgs_4",
+        "nixpkgs": [
+          "radian",
+          "nixpkgs"
+        ],
         "nixpkgsPy36": "nixpkgsPy36",
         "pypiIndex": "pypiIndex"
       },
       "locked": {
-        "lastModified": 1651478726,
-        "narHash": "sha256-1keY+UBBXy1lBgwJYyvz6O4qNw4dqLIewxnichY8YNk=",
+        "lastModified": 1651652484,
+        "narHash": "sha256-zbF2+oTnyioLypDGoVMascpUCSizbDzfPaWhEV/GD+A=",
         "owner": "DavHau",
         "repo": "pypi-deps-db",
-        "rev": "e139457b85331bd199d3ef2eeaa9ce76f7a26f6a",
+        "rev": "3866d5c0e48771fbe7fb20b2d6bd5553ebf74a50",
         "type": "github"
       },
       "original": {
@@ -154,11 +134,11 @@
     "pypiIndex": {
       "flake": false,
       "locked": {
-        "lastModified": 1651470412,
-        "narHash": "sha256-MgDE3c9mzRf50+6RrsgJjFBS5N6MSSN+fCHUjIA1l74=",
+        "lastModified": 1651642222,
+        "narHash": "sha256-E1C881MR87z8FmzOWNsp5rr4SYqmLCR4M8akN4n1EjA=",
         "owner": "davhau",
         "repo": "nix-pypi-fetcher",
-        "rev": "bbbe4369cbd40f869607af27d2e28381a56b5796",
+        "rev": "f0f0cd7e6abf79c31bb1af79f0264763b871b779",
         "type": "github"
       },
       "original": {
@@ -171,16 +151,16 @@
       "inputs": {
         "flake-utils": "flake-utils",
         "mach-nix": "mach-nix",
-        "nixpkgs": "nixpkgs_3",
+        "nixpkgs": "nixpkgs_2",
         "pypi-deps-db": "pypi-deps-db"
       },
       "locked": {
-        "narHash": "sha256-ZRnl2X1YEBTL17aEFMi5BGkzYBEqR9TckIsgpGrvTDo=",
-        "path": "/nix/store/zj5mmai047d8byn7gyqzc9krfks0hpzv-source/radian",
+        "narHash": "sha256-AYft37Y8mMPGz7Yvpr4RcGqK2498OqN7aGWAL4DXAJE=",
+        "path": "/nix/store/90d78n3iaf8hawpq2ndll5i55ygy2ksx-source/radian",
         "type": "path"
       },
       "original": {
-        "path": "/nix/store/zj5mmai047d8byn7gyqzc9krfks0hpzv-source/radian",
+        "path": "/nix/store/90d78n3iaf8hawpq2ndll5i55ygy2ksx-source/radian",
         "type": "path"
       }
     },
