@@ -9,7 +9,7 @@
     # This section will allow us to create a python environment
     # with specific predefined python packages from PyPi
     pypi-deps-db = {
-      url = "github:DavHau/pypi-deps-db";
+      url = "github:DavHau/pypi-deps-db/a1ff486da6bafcba0a5f64fec87a583d544ea374";
       inputs.mach-nix.follows = "mach-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };

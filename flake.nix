@@ -1,5 +1,5 @@
 {
-  description = "R set up with VSCode, radian, httpgd";
+  description = "R set up with VSCode, radian, httpgd, ...";
   
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/21.11";
@@ -37,10 +37,10 @@
         pkgs.rWrapper.override{
           packages = vscodeRPackages ++ extraRPackages;
         };
-      # RStudioWithPackages =
-      #   pkgs.rstudioWrapper.override {
-      #     packages = vscodeRPackages ++ extraRPackages;
-      #   };
+      # # RStudioWithPackages =
+      # #   pkgs.rstudioWrapper.override {
+      # #     packages = vscodeRPackages ++ extraRPackages;
+      # #   };
     in {
       devShell.x86_64-linux =
         pkgs.mkShell { 
@@ -52,9 +52,9 @@
             radian.defaultPackage.x86_64-linux
 
             RWithPackages
-            # RStudioWithPackages
+            # # RStudioWithPackages
 
-            pkgs.pandoc
+            # pkgs.pandoc
           ];
         };
     };
