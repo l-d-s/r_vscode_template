@@ -46,23 +46,9 @@
       # needed for knitr I think
       "devtools"
     ];
-    extraRPackages = [
-      "tidyverse"
-
-      # graphics
-      "cowplot"
-      "lemon"
-      "patchwork"
-
-      # bayes
-      "brms"
-      "rstanarm"
-      "tidybayes"
-      "bayesplot"
-      # "rjags"
-    ];
+    extraRPackages = import ./extra_r_packages.nix;
     rPackageList = vscodeRPackages ++ extraRPackages;
-  in 
+  in
   {
     # enter this python environment by executing `nix shell .`
     defaultPackage = forAllSystems (
