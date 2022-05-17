@@ -6,6 +6,9 @@
     nixpkgs.url = "github:NixOS/nixpkgs/21.11";
     flake-utils.url = "github:numtide/flake-utils";
     flake-utils.inputs.nixpkgs.follows = "nixpkgs";
+    flake-compat.url = "github:edolstra/flake-compat";
+    flake-compat.flake = false;
+    flake-compat.inputs.nixpkgs.follows = "nixpkgs";
     # This section will allow us to create a python environment
     # with specific predefined python packages from PyPi
     pypi-deps-db = {
@@ -26,6 +29,7 @@
     mach-nix,
     flake-utils,
     pypi-deps-db,
+    flake-compat,
     ...
   } @ inp: 
   let
