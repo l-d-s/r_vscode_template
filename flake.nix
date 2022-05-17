@@ -1,61 +1,56 @@
 {
-  description = "R set up with VSCode, radian, httpgd, ...";
-  
+  # Following
+  # https://github.com/DavHau/mach-nix/blob/master/examples.md#buildpythonpackage-from-github
+
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/21.11";
-    radian.url = "./radian";
-    # radian.inputs.nixpkgs.follows = "nixpkgs";
+    flake-utils.url = "github:numtide/flake-utils";
+    flake-utils.inputs.nixpkgs.follows = "nixpkgs";
+    # This section will allow us to create a python environment
+    # with specific predefined python packages from PyPi
+    pypi-deps-db = {
+      url = "github:DavHau/pypi-deps-db/a1ff486da6bafcba0a5f64fec87a583d544ea374";
+      inputs.mach-nix.follows = "mach-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    mach-nix = {
+      url = "github:DavHau/mach-nix/3.4.0";
+      inputs.pypi-deps-db.follows = "pypi-deps-db";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
-  outputs = { self, nixpkgs, radian }:
-    let 
-      pkgs = nixpkgs.legacyPackages.x86_64-linux;
-      vscodeRPackages = with pkgs.rPackages; [
-        languageserver
-        httpgd
-        rlang
-        jsonlite
-        # needed for knitr I think
-        devtools
-      ];
-      extraRPackages = with pkgs.rPackages; [
-        tidyverse
-
-        # graphics
-        cowplot
-        lemon
-        patchwork
-
-        # bayes
-        brms
-        rstanarm
-        tidybayes
-        bayesplot
-        rjags
-      ];
-      RWithPackages =
-        pkgs.rWrapper.override{
-          packages = vscodeRPackages ++ extraRPackages;
+  outputs = {
+    self,
+    nixpkgs,
+    mach-nix,
+    flake-utils,
+    pypi-deps-db,
+    ...
+  } @ inp: let
+    l = nixpkgs.lib // builtins;
+    supportedSystems = ["x86_64-linux" "aarch64-darwin"];
+    forAllSystems = f:
+      l.genAttrs supportedSystems
+      (system: f system (import nixpkgs {inherit system;}));
+  in {
+    # enter this python environment by executing `nix shell .`
+    defaultPackage = forAllSystems (
+      system: pkgs: let
+        radian = mach-nix.lib."${system}".buildPythonApplication {
+          src = builtins.fetchGit {
+            url = "https://github.com/randy3k/radian/";
+            ref = "refs/tags/v0.6.1";
+            rev = "1cab858b24eed3749c6b5e99ed1cfe26e144ac5d";
+          };
         };
-      # # RStudioWithPackages =
-      # #   pkgs.rstudioWrapper.override {
-      # #     packages = vscodeRPackages ++ extraRPackages;
-      # #   };
-    in {
-      devShell.x86_64-linux =
-        pkgs.mkShell { 
-          # need to add
-          # export R_LIBS_SITE=$(R --slave -e 'paste0(.Library.site, collapse = ":")' | sed 's/\[1\] "//g' | sed 's/"//g')
-          buildInputs = [
-            # note: a derivation, not the flake itself
-            # https://discourse.nixos.org/t/flakes-buildinputs-and-devshell/16208
-            radian.defaultPackage.x86_64-linux
 
-            RWithPackages
-            # # RStudioWithPackages
-
-            # pkgs.pandoc
-          ];
+        radianWrapper = pkgs.callPackage ./wrapper.nix {
+          inherit radian;
+          packages = with pkgs.rPackages; [ggplot2];
         };
-    };
+      in
+        radianWrapper
+    );
+  };
 }
