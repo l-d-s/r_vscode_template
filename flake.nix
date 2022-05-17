@@ -27,13 +27,39 @@
     flake-utils,
     pypi-deps-db,
     ...
-  } @ inp: let
+  } @ inp: 
+  let
     l = nixpkgs.lib // builtins;
     supportedSystems = ["x86_64-linux" "aarch64-darwin"];
     forAllSystems = f:
       l.genAttrs supportedSystems
       (system: f system (import nixpkgs {inherit system;}));
-  in {
+    vscodeRPackages = [
+      "languageserver"
+      "httpgd"
+      "rlang"
+      "jsonlite"
+      # needed for knitr I think
+      "devtools"
+    ];
+    extraRPackages = [
+      "tidyverse"
+
+      # graphics
+      "cowplot"
+      "lemon"
+      "patchwork"
+
+      # bayes
+      "brms"
+      "rstanarm"
+      "tidybayes"
+      "bayesplot"
+      # "rjags"
+    ];
+    rPackageList = vscodeRPackages ++ extraRPackages;
+  in 
+  {
     # enter this python environment by executing `nix shell .`
     defaultPackage = forAllSystems (
       system: pkgs: let
@@ -47,7 +73,7 @@
 
         radianWrapper = pkgs.callPackage ./wrapper.nix {
           inherit radian;
-          packages = with pkgs.rPackages; [ggplot2];
+          packages = l.attrValues (l.getAttrs rPackageList pkgs.rPackages);
         };
       in
         radianWrapper
