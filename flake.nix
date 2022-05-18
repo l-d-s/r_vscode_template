@@ -71,6 +71,7 @@
         };
       in
         pkgs.mkShell { 
+          shellHook = "export RADIAN_BIN=${radianWrapper.outPath}/bin/radian";
           buildInputs = [ radianWrapper rWrapper ]; }
     );
   };
