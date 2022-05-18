@@ -51,7 +51,7 @@
   in
   {
     # enter this python environment by executing `nix shell .`
-    defaultPackage = forAllSystems (
+    devShell = forAllSystems (
       system: pkgs: let
         radian = mach-nix.lib."${system}".buildPythonApplication {
           src = builtins.fetchGit {
@@ -60,13 +60,18 @@
             rev = "1cab858b24eed3749c6b5e99ed1cfe26e144ac5d";
           };
         };
-
+        rPackages = l.attrValues (l.getAttrs rPackageList pkgs.rPackages);
         radianWrapper = pkgs.callPackage ./wrapper.nix {
           inherit radian;
-          packages = l.attrValues (l.getAttrs rPackageList pkgs.rPackages);
+          packages = rPackages;
+        };
+
+        rWrapper = pkgs.rWrapper.override {
+          packages = rPackages;
         };
       in
-        radianWrapper
+        pkgs.mkShell { 
+          buildInputs = [ radianWrapper rWrapper ]; }
     );
   };
 }
