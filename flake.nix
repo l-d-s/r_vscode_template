@@ -3,7 +3,7 @@
   # https://github.com/DavHau/mach-nix/blob/master/examples.md#buildpythonpackage-from-github
 
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/22.05";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-22.05";
     flake-utils.url = "github:numtide/flake-utils";
     flake-utils.inputs.nixpkgs.follows = "nixpkgs";
     # For legacy Nix installs, to create a shell
@@ -13,7 +13,7 @@
     # This section will allow us to create a python environment
     # with specific predefined python packages from PyPi
     pypi-deps-db = {
-      url = "github:DavHau/pypi-deps-db/982b6cdf6552fb9296e1ade29cf65a2818cbbd6b";
+      url = "github:DavHau/pypi-deps-db/e9571cac25d2f509e44fec9dc94a3703a40126ff";
       inputs.mach-nix.follows = "mach-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
@@ -55,6 +55,7 @@
       system: pkgs: let
         radian = mach-nix.lib."${system}".mkPython {
           requirements = "radian";
+          ignoreDataOutdated = true; # temporary; due to https://github.com/DavHau/pypi-deps-db/issues/16
         };
         rPackages = l.attrValues (l.getAttrs rPackageList pkgs.rPackages);
         radianWrapper = pkgs.callPackage ./radian_wrapper.nix {
@@ -67,7 +68,7 @@
         };
       in
         pkgs.mkShell { 
-          shellHook = "export RADIAN_BIN=${radian.outPath}/bin/radian";
+          shellHook = "export RADIAN_BIN=${radianWrapper.outPath}/bin/radian";
           buildInputs = [ radianWrapper rWrapper pkgs.vscode ]; }
     );
   };
