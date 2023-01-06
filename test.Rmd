@@ -1,0 +1,11 @@
+---
+title: Test
+author: Leon Di Stefano
+date: "`r Sys.Date()`"
+---
+
+Testing.
+
+```{r}
+plot(rnorm(1000), rnorm(1000))
+```

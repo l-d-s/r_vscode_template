@@ -3,21 +3,22 @@
   # https://github.com/DavHau/mach-nix/blob/master/examples.md#buildpythonpackage-from-github
 
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/21.11";
+    nixpkgs.url = "github:NixOS/nixpkgs/22.05";
     flake-utils.url = "github:numtide/flake-utils";
     flake-utils.inputs.nixpkgs.follows = "nixpkgs";
+    # For legacy Nix installs, to create a shell
     flake-compat.url = "github:edolstra/flake-compat";
     flake-compat.flake = false;
     flake-compat.inputs.nixpkgs.follows = "nixpkgs";
     # This section will allow us to create a python environment
     # with specific predefined python packages from PyPi
     pypi-deps-db = {
-      url = "github:DavHau/pypi-deps-db/a1ff486da6bafcba0a5f64fec87a583d544ea374";
+      url = "github:DavHau/pypi-deps-db/982b6cdf6552fb9296e1ade29cf65a2818cbbd6b";
       inputs.mach-nix.follows = "mach-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     mach-nix = {
-      url = "github:DavHau/mach-nix/3.4.0";
+      url = "github:DavHau/mach-nix/3.5.0";
       inputs.pypi-deps-db.follows = "pypi-deps-db";
       inputs.nixpkgs.follows = "nixpkgs";
     };
@@ -28,7 +29,6 @@
     nixpkgs,
     mach-nix,
     flake-utils,
-    pypi-deps-db,
     flake-compat,
     ...
   } @ inp: 
@@ -53,15 +53,11 @@
     # enter this python environment by executing `nix shell .`
     devShell = forAllSystems (
       system: pkgs: let
-        radian = mach-nix.lib."${system}".buildPythonApplication {
-          src = builtins.fetchGit {
-            url = "https://github.com/randy3k/radian/";
-            ref = "refs/tags/v0.6.1";
-            rev = "1cab858b24eed3749c6b5e99ed1cfe26e144ac5d";
-          };
+        radian = mach-nix.lib."${system}".mkPython {
+          requirements = "radian";
         };
         rPackages = l.attrValues (l.getAttrs rPackageList pkgs.rPackages);
-        radianWrapper = pkgs.callPackage ./wrapper.nix {
+        radianWrapper = pkgs.callPackage ./radian_wrapper.nix {
           inherit radian;
           packages = rPackages;
         };
@@ -71,8 +67,8 @@
         };
       in
         pkgs.mkShell { 
-          shellHook = "export RADIAN_BIN=${radianWrapper.outPath}/bin/radian";
-          buildInputs = [ radianWrapper rWrapper ]; }
+          shellHook = "export RADIAN_BIN=${radian.outPath}/bin/radian";
+          buildInputs = [ radianWrapper rWrapper pkgs.vscode ]; }
     );
   };
 }

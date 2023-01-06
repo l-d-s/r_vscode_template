@@ -7,9 +7,9 @@
   "patchwork"
   
   # bayes
-  "brms"
-  "rstanarm"
-  "tidybayes"
-  "bayesplot"
+  # "brms"
+  # "rstanarm"
+  # "tidybayes"
+  # "bayesplot"
   # "rjags"
 ]
