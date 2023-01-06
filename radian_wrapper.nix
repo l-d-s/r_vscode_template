@@ -10,10 +10,10 @@ symlinkJoin {
   preferLocalBuild = true;
   allowSubstitutes = false;
 
-  buildInputs = [radian R] ++ packages;
-  paths = [radian];
+  buildInputs = [ radian R ] ++ packages;
+  paths = [ radian ];
 
-  nativeBuildInputs = [makeWrapper];
+  nativeBuildInputs = [ makeWrapper ];
 
   postBuild = ''
     cd ${radian}/bin
