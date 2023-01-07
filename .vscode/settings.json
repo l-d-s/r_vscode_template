@@ -1,6 +1,6 @@
 {
     "nixEnvSelector.nixFile": "${workspaceRoot}/shell.nix",
-    "r.rterm.linux": "${env:RADIAN_BIN}",
+    "r.rterm.linux": "/nix/store/hrczp9babshjk719aqivifv6zcm9pq7n-python3-3.9.16-env-wrapper/bin/radian",
     "r.plot.useHttpgd": true,
     "r.rpath.linux": "/nix/store/8zplz37hqla4kkhfgcp8j01yf00mw6y1-R-4.2.0-wrapper/bin/R",
     "terminal.integrated.profiles.linux": {
